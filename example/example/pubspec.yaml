@@ -1,4 +1,4 @@
-name: flutter_runtime
+name: example
 description: A starting point for Dart libraries or applications.
 version: 1.0.0
 # homepage: https://www.example.com
@@ -6,14 +6,9 @@ version: 1.0.0
 environment:
   sdk: '>=2.18.5 <3.0.0'
 
+# dependencies:
+#   path: ^1.8.0
+
 dev_dependencies:
   lints: ^2.0.0
   test: ^1.16.0
-dependencies:
-  analyzer: ^5.3.1
-  dart_style: ^2.2.4
-  logger: ^1.1.0
-  mustache_template: ^2.0.0
-  path: ^1.8.3
-  process_run: ^0.12.3+2
-  pubspec: ^2.3.0
