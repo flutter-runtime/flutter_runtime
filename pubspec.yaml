@@ -12,6 +12,7 @@ dev_dependencies:
 dependencies:
   analyzer: ^5.3.1
   dart_style: ^2.2.4
+  darty_json_safe: ^1.0.1
   logger: ^1.1.0
   mustache_template: ^2.0.0
   path: ^1.8.3
