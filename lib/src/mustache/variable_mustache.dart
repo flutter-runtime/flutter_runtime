@@ -1,6 +1,6 @@
-final topLevelVariableMustache = '''
+final variableMustache = '''
 {{#topLevelVariables}}
-{{{typeName}}} get \${{name}}\$ => {{name}};
+{{{typeName}}} get \${{name}}\$ => {{value}};
 {{#hasSet}}
 
 void \${{setMethodName}}\$({{{typeName}}} value) => {{name}} = value;

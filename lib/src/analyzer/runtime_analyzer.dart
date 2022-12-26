@@ -41,18 +41,16 @@ class RuntimeAnalyzer {
         continue;
       }
       for (final unit in result.units) {
-        final analyzer = UnitAnalyzer(unit);
-        final code = analyzer.code;
-
         final relativePath = p.relative(filePath, from: rootPath);
-
+        final analyzer = UnitAnalyzer(unit, relativePath);
+        final code = analyzer.code;
         final path = p.join(
           packagePath(packageName(pubspec)),
           relativePath,
         );
 
         final formatCode = DartFormatter().format('''
-// ignore_for_file: implementation_imports, depend_on_referenced_packages, unused_import
+// ignore_for_file: implementation_imports, depend_on_referenced_packages, unused_import, curly_braces_in_flow_control_structures
 
 import 'package:${pubspec.name}/${relativePath.replaceAll('lib/', '')}';
 $code
