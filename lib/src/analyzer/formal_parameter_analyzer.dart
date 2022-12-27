@@ -21,4 +21,6 @@ class FormalParameterAnalyzer extends Analyzer<FormalParameter> {
         .map((e) => DartTypeAnalyzer(e))
         .value;
   }
+
+  bool get isOptional => element.isOptional;
 }

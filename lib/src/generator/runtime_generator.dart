@@ -13,6 +13,7 @@ class RuntimeGenerator extends Data {
     this.constructors = const [],
     this.fields = const [],
     this.methods = const [],
+    this.createCode,
   });
 
   final String runtimeName;
@@ -21,6 +22,7 @@ class RuntimeGenerator extends Data {
   final List<ConstructorData> constructors;
   final List<FieldData> fields;
   final List<MethodData> methods;
+  final String? createCode;
 
   String get code {
     return MustacheManager<RuntimeGenerator>(
@@ -41,5 +43,6 @@ class RuntimeGenerator extends Data {
         'hasGetterFields': fields.map((e) => e.isGetter).isNotEmpty,
         'methods': methods.map((e) => e.toData).toList(),
         'hasMethods': methods.isNotEmpty,
+        'createCode': createCode,
       };
 }

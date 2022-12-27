@@ -17,4 +17,10 @@ class VariableAnalyzer extends Analyzer<NodeList<VariableDeclaration>> {
       return DartTypeAnalyzer(e).name(withNullability: withNullability);
     }).value;
   }
+
+  String? defaultValueCode(String name) {
+    final index = element.indexWhere((element) => element.name.lexeme == name);
+    if (index == -1) return null;
+    return element[index].initializer?.staticParameterElement?.defaultValueCode;
+  }
 }

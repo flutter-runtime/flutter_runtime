@@ -27,7 +27,7 @@ abstract class Runtime<T> {
   /// 运行时存在 Package 的相对路径
   String get relativePath;
 
-  FutureOr call(String name, Map<String, dynamic> data) {
+  call(String name, Map<String, dynamic> data) {
     throw UnimplementedError();
   }
 }

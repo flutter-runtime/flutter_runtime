@@ -16,4 +16,6 @@ class MethodAnalyzer extends Analyzer<MethodDeclaration> {
         .map((e) => e.map((e) => FormalParameterAnalyzer(e)).toList())
         .defaultValue([]);
   }
+
+  bool get isGetter => element.isGetter;
 }

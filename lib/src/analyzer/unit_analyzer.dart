@@ -9,6 +9,7 @@ import 'package:flutter_runtime/src/analyzer/method_analyzer.dart';
 import 'package:flutter_runtime/src/analyzer/top_level_variable_analyzer.dart';
 import 'package:flutter_runtime/src/data/constructor_data.dart';
 import 'package:flutter_runtime/src/data/field_data.dart';
+import 'package:flutter_runtime/src/data/method_data.dart';
 import 'package:flutter_runtime/src/data/parameter_data.dart';
 import 'package:flutter_runtime/src/generator/enum_generator.dart';
 import 'package:flutter_runtime/src/generator/method_generator.dart';
@@ -28,7 +29,9 @@ class UnitAnalyzer extends Analyzer<ResolvedUnitResult> {
 
     final libraryRuntimeGenerator = RuntimeGenerator(
       runtimeName: 'Library',
+      elementName: 'dynamic',
       relativePath: relativePath.substring(4),
+      createCode: 'null',
       fields: nodes
           .whereType<TopLevelVariableDeclaration>()
           .map((e) => TopLevelVariableAnalyzer(e))
@@ -85,7 +88,7 @@ ${codeBuffer.toString()}
   RuntimeGenerator createRuntimeGeneratorFromClass(ClassAnalyzer analyzer) {
     return RuntimeGenerator(
       runtimeName: analyzer.name,
-      relativePath: relativePath,
+      relativePath: relativePath.substring(4),
       elementName: analyzer.name,
       constructors: analyzer.constructors.map((e) {
         final methodGenerator =
@@ -128,6 +131,8 @@ ${codeBuffer.toString()}
           e.name!,
           e.type!.name(withNullability: true),
           e.isNamed,
+          defaultValue: e.defaultValue,
+          isOptional: e.isOptional,
         );
       }).toList(),
     );
@@ -137,9 +142,19 @@ ${codeBuffer.toString()}
       ExtensionAnalyzer analyzer) {
     return RuntimeGenerator(
       runtimeName: analyzer.name!,
-      relativePath: relativePath,
+      relativePath: relativePath.substring(4),
       elementName: analyzer.extendedTypeName!,
       constructors: [],
+      createCode: "parameters['element'] as ${analyzer.extendedTypeName!}",
+      methods: analyzer.methods.map((e) {
+        late String code;
+        if (e.isGetter) {
+          code = 'element.${e.name}';
+        } else {
+          code = createMethodGeneratorFromMethod(e).code;
+        }
+        return MethodData(e.name, code);
+      }).toList(),
     );
   }
 
@@ -151,6 +166,8 @@ ${codeBuffer.toString()}
                 e.name!,
                 e.type!.name(withNullability: true),
                 e.isNamed,
+                defaultValue: e.defaultValue,
+                isOptional: e.isOptional,
               ))
           .toList(),
     );

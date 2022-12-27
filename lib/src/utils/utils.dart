@@ -8,3 +8,11 @@ extension StringToHump on String {
     return first.toUpperCase() + first.substring(1);
   }
 }
+
+extension $RuntimeCreate on Map<String, dynamic> {
+  T? get<T>(String name, [T? defaultValue]) {
+    final value = this[name];
+    if (value == null) return defaultValue;
+    return value as T;
+  }
+}

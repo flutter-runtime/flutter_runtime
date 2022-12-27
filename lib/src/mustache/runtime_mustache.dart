@@ -12,8 +12,11 @@ class \${{runtimeName}}\$ extends Runtime{{#hasElementName}}<{{elementName}}>{{/
     {{#constructors}}
     if (constructorName == {{{name}}}) return {{{code}}};
     {{/constructors}}
-    {{/hasConstructors}}
     throw UnimplementedError();
+    {{/hasConstructors}}
+    {{^hasConstructors}}
+    return {{{createCode}}};
+    {{/hasConstructors}}
   }
 
   @override
@@ -26,7 +29,8 @@ class \${{runtimeName}}\$ extends Runtime{{#hasElementName}}<{{elementName}}>{{/
     throw UnsupportedError(name);
   }
 
-  FutureOr call(String name, Map<String, dynamic> data) {
+  @override
+  call(String name, Map<String, dynamic> data) {
     {{#hasMethods}}
     {{#methods}}
     if (name == '{{name}}') return {{{code}}};
