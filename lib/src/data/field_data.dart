@@ -7,6 +7,7 @@ class FieldData extends Data {
     this.isGetter,
     this.isSetter, {
     this.code,
+    this.isStatic = false,
   });
 
   /// 字段名称
@@ -23,6 +24,8 @@ class FieldData extends Data {
 
   /// Getter 值的代码
   final String? code;
+
+  final bool isStatic;
 
   @override
   Map<String, dynamic> get toData {

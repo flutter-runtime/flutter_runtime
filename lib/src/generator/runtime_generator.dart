@@ -32,17 +32,28 @@ class RuntimeGenerator extends Data {
   }
 
   @override
-  Map<String, dynamic> get toData => {
-        'runtimeName': runtimeName,
-        'relativePath': relativePath,
-        'elementName': elementName,
-        'hasElementName': elementName != null,
-        'constructors': constructors.map((e) => e.toData).toList(),
-        'hasConstructors': constructors.isNotEmpty,
-        'fields': fields.map((e) => e.toData).toList(),
-        'hasGetterFields': fields.map((e) => e.isGetter).isNotEmpty,
-        'methods': methods.map((e) => e.toData).toList(),
-        'hasMethods': methods.isNotEmpty,
-        'createCode': createCode,
-      };
+  Map<String, dynamic> get toData {
+    return {
+      'runtimeName': runtimeName,
+      'relativePath': relativePath,
+      'elementName': elementName,
+      'hasElementName': elementName != null,
+      'constructors': constructors
+          .where((element) => !element.name.startsWith("'_"))
+          .map((e) => e.toData)
+          .toList(),
+      'hasConstructors': constructors.isNotEmpty,
+      'fields': fields
+          .where((element) => !element.name.startsWith("_"))
+          .map((e) => e.toData)
+          .toList(),
+      'hasGetterFields': fields.map((e) => e.isGetter).isNotEmpty,
+      'methods': methods
+          .where((element) => !element.name.startsWith("_"))
+          .map((e) => e.toData)
+          .toList(),
+      'hasMethods': methods.isNotEmpty,
+      'createCode': createCode ?? 'null',
+    };
+  }
 }

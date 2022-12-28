@@ -9,7 +9,7 @@
             "request": "launch",
             "type": "dart",
             "program": "example/main.dart",
-            "args": ["/Users/zhangxing/Downloads/meta-1.8.0"]
+            "args": ["/Users/zhangxing/Downloads/path-1.8.3"]
         }
     ]
 }

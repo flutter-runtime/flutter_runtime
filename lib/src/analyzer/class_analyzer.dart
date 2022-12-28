@@ -27,4 +27,6 @@ class ClassAnalyzer extends Analyzer<ClassDeclaration> {
         .map((e) => ConstructorAnalyzer(e))
         .toList();
   }
+
+  bool get isAbstract => element.declaredElement?.isAbstract ?? false;
 }

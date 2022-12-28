@@ -8,6 +8,6 @@ class FieldAnalyzer extends Analyzer<FieldDeclaration> {
   VariableAnalyzer get variable => VariableAnalyzer(element.fields.variables);
 
   bool get isFinal => element.fields.isFinal;
-
   bool get isConst => element.fields.isConst;
+  bool get isStatic => element.isStatic;
 }

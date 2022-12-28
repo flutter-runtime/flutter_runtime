@@ -5,7 +5,9 @@ import 'package:flutter_runtime/src/analyzer/class_analyzer.dart';
 import 'package:flutter_runtime/src/analyzer/constructor_analyzer.dart';
 import 'package:flutter_runtime/src/analyzer/enum_analyzer.dart';
 import 'package:flutter_runtime/src/analyzer/extension_analyzer.dart';
+import 'package:flutter_runtime/src/analyzer/function_analyzer.dart';
 import 'package:flutter_runtime/src/analyzer/method_analyzer.dart';
+import 'package:flutter_runtime/src/analyzer/method_analyzer_mixin.dart';
 import 'package:flutter_runtime/src/analyzer/top_level_variable_analyzer.dart';
 import 'package:flutter_runtime/src/data/constructor_data.dart';
 import 'package:flutter_runtime/src/data/field_data.dart';
@@ -42,6 +44,11 @@ class UnitAnalyzer extends Analyzer<ResolvedUnitResult> {
         return !element.name.startsWith("_") &&
             !element.typeName.startsWith('_');
       }).toList(),
+      methods: nodes
+          .whereType<FunctionDeclaration>()
+          .map((e) => FunctionAnalyzer(e))
+          .map((e) => methodDataFromAnalyzer(e))
+          .toList(),
     );
 
     codeBuffer.writeln(libraryRuntimeGenerator.code);
@@ -101,12 +108,19 @@ ${codeBuffer.toString()}
       fields: analyzer.fields.map(
         (e) {
           return e.variable.names.map((name) {
+            late String code;
+            if (e.isStatic) {
+              code = '${analyzer.name}.$name';
+            } else {
+              code = 'element?.$name';
+            }
             return FieldData(
               name,
               e.variable.typeName(withNullability: true)!,
               true,
               !e.isFinal && !e.isConst,
-              code: 'element.$name',
+              code: code,
+              isStatic: e.isStatic,
             );
           }).toList();
         },
@@ -146,19 +160,12 @@ ${codeBuffer.toString()}
       elementName: analyzer.extendedTypeName!,
       constructors: [],
       createCode: "parameters['element'] as ${analyzer.extendedTypeName!}",
-      methods: analyzer.methods.map((e) {
-        late String code;
-        if (e.isGetter) {
-          code = 'element.${e.name}';
-        } else {
-          code = createMethodGeneratorFromMethod(e).code;
-        }
-        return MethodData(e.name, code);
-      }).toList(),
+      methods: analyzer.methods.map((e) => methodDataFromAnalyzer(e)).toList(),
     );
   }
 
-  MethodGenerator createMethodGeneratorFromMethod(MethodAnalyzer analyzer) {
+  MethodGenerator createMethodGeneratorFromMethod(
+      MethodAnalyzerMixin analyzer) {
     return MethodGenerator(
       analyzer.name,
       analyzer.parameters
@@ -171,5 +178,20 @@ ${codeBuffer.toString()}
               ))
           .toList(),
     );
+  }
+
+  MethodData methodDataFromAnalyzer(MethodAnalyzerMixin analyzer,
+      {String? prefix}) {
+    late String code;
+    if (analyzer.isGetter) {
+      if (prefix == null) {
+        code = analyzer.name;
+      } else {
+        code = '$prefix.${analyzer.name}';
+      }
+    } else {
+      code = createMethodGeneratorFromMethod(analyzer).code;
+    }
+    return MethodData(analyzer.name, code);
   }
 }
