@@ -8,12 +8,12 @@ abstract class FlutterRuntime<T> {
   // 执行当前类的公开方法
   dynamic call(String methodName, [Map args = const {}]);
   // 根据类名创建类实例
-  dynamic createInstance(String className, [Map args = const {}]) {
+  dynamic createInstance(
+    String packageName,
+    String libraryPath,
+    String className, [
+    Map args = const {},
+  ]) {
     return null;
   }
-
-  // 当前归属的包名
-  String get packageName;
-  // 当前归属的库路径
-  String get libraryPath;
 }
