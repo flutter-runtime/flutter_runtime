@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/king/fvm/versions/stable
-FLUTTER_APPLICATION_PATH=/Users/king/Documents/flutter_runtime
+FLUTTER_ROOT=/Users/zhangxing/fvm/versions/3.7.12
+FLUTTER_APPLICATION_PATH=/Users/zhangxing/Documents/flutter_runtime_ide/packages/flutter_runtime
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build
